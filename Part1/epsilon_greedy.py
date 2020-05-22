@@ -54,21 +54,21 @@ def simulate_epsilon(means, N, epsilon):
     plt.show()
 
     return cum_avg   
-
-means = [1, 2 , 3]
-N = int(10e4)
-cum_avg1 = simulate_epsilon(means, N, epsilon=0.1)
-cum_avg05 = simulate_epsilon(means, N, epsilon=0.05)
-cum_avg01 = simulate_epsilon(means, N, epsilon=0.01)
-
-plt.plot(cum_avg1, label='epsilon = 0.1')
-plt.plot(cum_avg05, label='epsilon = 0.05')
-plt.plot(cum_avg01, label='epsilon = 0.01')
-plt.legend(loc='lower right')
-plt.xscale('log')
-plt.title('Moving Average Plot - Logf Scale')
-plt.ylabel('Mean Rate of choosing best arm')
-plt.xlabel('Time Step')
-plt.show()
+if __name__=='__main__':
+    means = [1, 2 , 3]
+    N = int(10e4)
+    cum_avg1 = simulate_epsilon(means, N, epsilon=0.1)
+    cum_avg05 = simulate_epsilon(means, N, epsilon=0.05)
+    cum_avg01 = simulate_epsilon(means, N, epsilon=0.01)
+    
+    plt.plot(cum_avg1, label='epsilon = 0.1')
+    plt.plot(cum_avg05, label='epsilon = 0.05')
+    plt.plot(cum_avg01, label='epsilon = 0.01')
+    plt.legend(loc='lower right')
+    plt.xscale('log')
+    plt.title('Moving Average Plot - Logf Scale')
+    plt.ylabel('Mean Rate of choosing best arm')
+    plt.xlabel('Time Step')
+    plt.show()
 
 
