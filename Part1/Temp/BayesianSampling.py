@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat May 23 02:17:13 2020
+Created on Sat May 23 04:48:31 2020
 
 @author: Danish
 """
@@ -10,43 +10,49 @@ import numpy as np
 import matplotlib.pyplot as plt
 from epsilon_greedy import simulate_epsilon
 
+
 class MAB:
-    def __init__(self, m):
-        self.m=m
-        self.mean=0
-        self.N=0
-    def pull_arm(self):
-        return np.random.randn()+self.m
-    def update_mean(self, x):
-        self.N += 1
-        self.mean = (1-1/self.N)*self.mean+(1.0/self.N)*x
-   
-def ucb(mean, n, nj):
-    if nj==0:
-        return float('inf')   
-    return mean + np.sqrt(2*np.log(n)/nj)      
-   
-def simulate_ucb(means, N):
+  def __init__(self, m):
+    self.m = m
+    # parameters for mu - prior is N(0,1)
+    self.predicted_mean = 0
+    self.lambda_ = 1
+    self.sum_x = 0 # for convenience
+    self.tau = 1
+  def pull_arm(self):
+    return np.random.randn() + self.m
+
+  def sample(self):
+    return np.random.randn() / np.sqrt(self.lambda_) + self.predicted_mean
+
+  def update_mean(self, x):
+    lambda0 = self.lambda_  
+    self.lambda_ += self.tau
+    self.sum_x += x
+    self.predicted_mean = (self.predicted_mean*lambda0 + self.tau*self.sum_x) / self.lambda_
+
+
+def simulate_bayesian(means, N):
     mabs = [MAB(means[0]), MAB(means[1]), MAB(means[2])]
     
     samples = np.zeros(N)
     for i in range(N):
         lst = []
         for b in mabs:
-            lst.append(ucb(b.mean, i+1, b.N))
+            lst.append(b.sample())
         idx = np.argmax(lst)
         x = mabs[idx].pull_arm()
         mabs[idx].update_mean(x)
         samples[i] = x
     cum_avg = np.cumsum(samples)/np.arange(1,N+1)
     #plotting
-    plt.plot(cum_avg, label='Cumulative Average-UCB')
+    plt.plot(cum_avg, label='Cumulative Average-Bayesian')
     plt.plot(np.ones(N)*means[0])
     plt.plot(np.ones(N)*means[1])
     plt.plot(np.ones(N)*means[2])
     plt.legend(loc='lower right')
     plt.xscale('log')
-    plt.title('Moving Average Plot - Log Scale, UCB')
+    plt.title('Moving Average Plot - Log Scale, Bayesian')
     plt.ylabel('Mean Rate of choosing best arm')
     plt.xlabel('Time Step')
     plt.show()
@@ -56,14 +62,15 @@ def simulate_ucb(means, N):
 if __name__=='__main__':
     means = [1, 2 , 3]
     N = int(10e4)
-    ep_g = simulate_epsilon(means, N, epsilon=0.1)
-    ucb_res = simulate_ucb(means, N)
+    ep_g  = simulate_epsilon(means, N, epsilon=0.1)
+    bayes = simulate_bayesian(means, N)
     
-    plt.plot(ep_g, label='Epsilon = 0.1')
-    plt.plot(ucb_res, label = 'Upper Confidence Bound')
+    plt.plot(ep_g, label='epsilon = 0.1')
+    plt.plot(bayes, label = 'Bayesian Sampling')
     plt.legend(loc='lower right')
     plt.xscale('log')
     plt.title('Moving Average Plot - Log Scale')
     plt.ylabel('Mean Rate of choosing best arm')
     plt.xlabel('Time Step')
     plt.show()
+
