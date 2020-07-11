@@ -385,7 +385,7 @@ class TicTacToe:
         V[state] = v
       return V
     
-    def play_agents(self, p1, p2, env, draw=False):
+    def play_agents(self, p1, p2, env):
       # loops until the game is over
       current_player = None
       while not env.game_over():
@@ -395,21 +395,13 @@ class TicTacToe:
           current_player = p2
         else:
           current_player = p1
-        # draw the board before the user who wants to see it makes a move
-        if draw:
-          #print('True')
-          if draw == 1 and current_player == p1:
-            env.draw_board()
-          if draw == 2 and current_player == p2:
-            env.draw_board()
         # current player makes a move
         current_player.take_action(env)
         # update state histories
         state = env.get_state()
         p1.update_state_history(state)
         p2.update_state_history(state)
-      if draw:
-        env.draw_board()
+      
       # do the value function update
       p1.update(env)
       p2.update(env)
