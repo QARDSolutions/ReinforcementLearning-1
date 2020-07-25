@@ -8,8 +8,7 @@ import numpy as np
 from tkinter import Button, DISABLED
 import tkinter.messagebox
 
-# this class represents a tic-tac-toe game
-# is a CS101-type of project
+
 class Environment:
   def __init__(self, LENGTH=3):
     self.LENGTH = LENGTH
