@@ -17,13 +17,12 @@ def train_agent(T=10000, save=True, ret=False, name=None):
     p1 = Agent()
     p2 = Agent()
     
-    # set initial V for p1 and p2
     env = Environment()
     #Create the object for TicTacToe class 
     tt = TicTacToe(env)
     state_winner_triples = tt.get_state_hash_and_winner()
     
-    
+    # set initial V for p1 and p2
     Vx = tt.initialV_x(state_winner_triples)
     p1.setV(Vx)
     Vo = tt.initialV_o(state_winner_triples)
@@ -41,15 +40,17 @@ def train_agent(T=10000, save=True, ret=False, name=None):
     if ret:
         p1, p2
         
-def play_TicTacToe(name):
+def play_TicTacToe(name, verbose=True):
     tk = Tk()
     with open(name, 'rb') as f:
         p1 = pickle.load(f)
+    if verbose:
+        p1.set_verbose(True)
     env = Environment()
     bg = BoardGUI(tk)
     bg.set_symbol(env.o)
     bg.play_game(p1, Environment())
     
 if __name__=='__main__':
-    #train_agent(T=10000, save=True, name='AgentAI')
+    train_agent(T=10000, save=True, name='AgentAI')
     play_TicTacToe(name='AgentAI')
