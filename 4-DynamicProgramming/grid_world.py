@@ -1,7 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Aug 10 10:25:55 2020
+
+@author: Danish
+"""
+
 import numpy as np
 
-
-class Grid: # Environment
+class Grid: 
   def __init__(self, rows, cols, start):
     self.rows = rows
     self.cols = cols
@@ -58,22 +64,10 @@ class Grid: # Environment
     return (self.i, self.j) not in self.actions
 
   def all_states(self):
-    # possibly buggy but simple way to get all states
-    # either a position that has possible next actions
-    # or a position that yields a reward
     return set(self.actions.keys()) | set(self.rewards.keys())
 
 
 def standard_grid():
-  # define a grid that describes the reward for arriving at each state
-  # and possible actions at each state
-  # the grid looks like this
-  # x means you can't go there
-  # s means start position
-  # number means reward at that state
-  # .  .  .  1
-  # .  x  . -1
-  # s  .  .  .
   g = Grid(3, 4, (2, 0))
   rewards = {(0, 3): 1, (1, 3): -1}
   actions = {
