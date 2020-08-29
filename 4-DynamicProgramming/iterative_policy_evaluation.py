@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Aug 11 16:53:55 2020
+
+@author: Danish
+"""
 import numpy as np
 from grid_world import standard_grid
 
@@ -24,24 +30,10 @@ def print_policy(P, g):
     print("")
 
 if __name__ == '__main__':
-  # iterative policy evaluation
-  # given a policy, let's find it's value function V(s)
-  # we will do this for both a uniform random policy and fixed policy
-  # NOTE:
-  # there are 2 sources of randomness
-  # p(a|s) - deciding what action to take given the state
-  # p(s',r|s,a) - the next state and reward given your action-state pair
-  # we are only modeling p(a|s) = uniform
-  # how would the code change if p(s',r|s,a) is not deterministic?
   grid = standard_grid()
 
-  # states will be positions (i,j)
-  # simpler than tic-tac-toe because we only have one "game piece"
-  # that can only be at one position at a time
   states = grid.all_states()
 
-  ### uniformly random actions ###
-  # initialize V(s) = 0
   V = {}
   for s in states:
     V[s] = 0
