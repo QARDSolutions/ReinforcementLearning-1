@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Aug 15 18:37:55 2020
+
+@author: Danish
+"""
+
 import numpy as np
 from grid_world import standard_grid, negative_grid
 from iterative_policy_evaluation import print_values, print_policy
@@ -6,7 +13,7 @@ SMALL_ENOUGH = 1e-3
 GAMMA = 0.9
 ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 
-# NOTE: this is only policy evaluation, not optimization
+
 
 def random_action(a):
   # choose given a with probability 0.5
@@ -20,11 +27,7 @@ def random_action(a):
     return np.random.choice(tmp)
 
 def play_game(grid, policy):
-  # returns a list of states and corresponding returns
-
-  # reset game to start at a random position
-  # we need to do this, because given our current deterministic policy
-  # we would never end up at certain states, but we still want to measure their value
+  
   start_states = list(grid.actions.keys())
   start_idx = np.random.choice(len(start_states))
   grid.set_state(start_states[start_idx])
@@ -63,23 +66,6 @@ if __name__ == '__main__':
   print("rewards:")
   print_values(grid.rewards, grid)
 
-  # state -> action
-  # found by policy_iteration_random on standard_grid
-  # MC method won't get exactly this, but should be close
-  # values:
-  # ---------------------------
-  #  0.43|  0.56|  0.72|  0.00|
-  # ---------------------------
-  #  0.33|  0.00|  0.21|  0.00|
-  # ---------------------------
-  #  0.25|  0.18|  0.11| -0.17|
-  # policy:
-  # ---------------------------
-  #   R  |   R  |   R  |      |
-  # ---------------------------
-  #   U  |      |   U  |      |
-  # ---------------------------
-  #   U  |   L  |   U  |   L  |
   policy = {
     (2, 0): 'U',
     (1, 0): 'U',
