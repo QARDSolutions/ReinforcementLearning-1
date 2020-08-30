@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Aug 16 08:13:55 2020
+
+@author: Danish
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from grid_world import standard_grid, negative_grid
@@ -7,21 +14,11 @@ from monte_carlo_es import max_dict
 GAMMA = 0.9
 ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 
-# NOTE: find optimal policy and value function
-#       using on-policy first-visit MC
 
 def random_action(a, eps=0.1):
   # choose given a with probability 1 - eps + eps/4
   # choose some other a' != a with probability eps/4
   p = np.random.random()
-  # if p < (1 - eps + eps/len(ALL_POSSIBLE_ACTIONS)):
-  #   return a
-  # else:
-  #   tmp = list(ALL_POSSIBLE_ACTIONS)
-  #   tmp.remove(a)
-  #   return np.random.choice(tmp)
-  #
-  # this is equivalent to the above
   if p < (1 - eps):
     return a
   else:
@@ -67,11 +64,6 @@ def play_game(grid, policy):
 
 
 if __name__ == '__main__':
-  # use the standard grid again (0 for every step) so that we can compare
-  # to iterative policy evaluation
-  # grid = standard_grid()
-  # try the negative grid too, to see if agent will learn to go past the "bad spot"
-  # in order to minimize number of steps
   grid = negative_grid(step_cost=-0.1)
 
   # print rewards
