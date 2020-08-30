@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Aug 15 22:36:55 2020
+
+@author: Danish
+"""
 import numpy as np
 from grid_world import standard_grid, negative_grid
 from iterative_policy_evaluation import print_values, print_policy
@@ -6,14 +12,8 @@ SMALL_ENOUGH = 1e-3
 GAMMA = 0.9
 ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 
-# NOTE: this is only policy evaluation, not optimization
 
 def play_game(grid, policy):
-  # returns a list of states and corresponding returns
-
-  # reset game to start at a random position
-  # we need to do this, because given our current deterministic policy
-  # we would never end up at certain states, but we still want to measure their value
   start_states = list(grid.actions.keys())
   start_idx = np.random.choice(len(start_states))
   grid.set_state(start_states[start_idx])
@@ -30,9 +30,6 @@ def play_game(grid, policy):
   states_and_returns = []
   first = True
   for s, r in reversed(states_and_rewards):
-    # the value of the terminal state is 0 by definition
-    # we should ignore the first state we encounter
-    # and ignore the last G, which is meaningless since it doesn't correspond to any move
     if first:
       first = False
     else:
