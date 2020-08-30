@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Aug 16 12:51:55 2020
+
+@author: Danish
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from grid_world import standard_grid, negative_grid
@@ -6,16 +13,7 @@ from iterative_policy_evaluation import print_values, print_policy
 GAMMA = 0.9
 ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 
-# NOTE: this script implements the Monte Carlo Exploring-Starts method
-#       for finding the optimal policy
-
 def play_game(grid, policy):
-  # returns a list of states and corresponding returns
-
-  # reset game to start at a random position
-  # we need to do this if we have a deterministic policy
-  # we would never end up at certain states, but we still want to measure their value
-  # this is called the "exploring starts" method
   start_states = list(grid.actions.keys())
   start_idx = np.random.choice(len(start_states))
   grid.set_state(start_states[start_idx])
@@ -36,12 +34,6 @@ def play_game(grid, policy):
     s = grid.current_state()
 
     if s in seen_states:
-      # hack so that we don't end up in an infinitely long episode
-      # bumping into the wall repeatedly
-      # if num_steps == 1 -> bumped into a wall and haven't moved anywhere
-      #   reward = -10
-      # else:
-      #   reward = falls off by 1 / num_steps
       reward = -10. / num_steps
       states_actions_rewards.append((s, None, reward))
       break
@@ -83,11 +75,6 @@ def max_dict(d):
 
 
 if __name__ == '__main__':
-  # use the standard grid again (0 for every step) so that we can compare
-  # to iterative policy evaluation
-  # grid = standard_grid()
-  # try the negative grid too, to see if agent will learn to go past the "bad spot"
-  # in order to minimize number of steps
   grid = negative_grid(step_cost=-0.9)
 
   # print rewards
